@@ -48,6 +48,9 @@ public:
 	iterator end() { return avail; }
 	const_iterator end() const { return avail; }
 
+	template<class In> iterator insert(iterator, In, In);
+	void assign(iterator, iterator);
+
 	//인터페이스 = 미완성
 	void push_back(const T& val){
 		if (avail == limit)	//필요하다면 저장 공간 확보
@@ -177,4 +180,38 @@ void Vec<T>::grow_once(){
 
 }
 
+//12장-연습12
+template<class T>
+template<class In>
+typename Vec<T>::iterator Vec<T>::insert(iterator d, In b, In e) {
+	//끈 부분과 차이 저장
+	Vec<T> end(d, avail);	//d부터 끝까지 다름 Vec에서 data저장
+	ptrdiff_t diff = d - data;
+
+	//끝 부분 소멸
+	if (d) {
+		//역방향으로 d가지 모든 요소를 삭제
+		while (avail != d)
+			alloc.destroy(--avail);
+	}
+
+	//b부터 e까지 요소를 추가
+	while (b != e)
+		push_back(*b++);
+
+	//다시 끝 부분 추가(불러오기
+	for (Vec<T>::const_iterator it = end.begin(); it != end.end(); ++it)
+		push_back(*it);
+
+	return data + diff;
+}
+
+//제12wkd -연습 13
+template<class T>
+void Vec<T>::assign(iterator b, iterator e) {
+	uncreate();
+
+	while (b != e)
+		push_back(*b++);
+}
 #endif
