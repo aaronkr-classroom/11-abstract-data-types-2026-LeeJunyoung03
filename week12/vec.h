@@ -34,12 +34,19 @@ public:
 	explicit Vec(size_type n, const T& val = T()) { create(n, val); };
 	//3. 사본 만드는 생성자
 	Vec(const Vec& v) { create(v.begin(), v.end()); };
+	//4.template 추가
+	template<class In>Vec(In b, In e) {
+		create(b, e);
+	}
 	//벡터크기와 인덱스에 관한 새로운 함수들
 	size_type size() const { return avail - data; }
 	T& operator[](size_type i) { return data[i]; }
-	const T& operator[](size_type i) { return data[i]; }
+	//const T& operator[](size_type i) { return data[i]; }
+	Vec(const_iterator i, const_iterator j) { create(i, j); }
 
+	//추가
 	const T& operator[](size_type i) const { return data[i]; }
+	Vec& operator=(const Vec& rhs);
 
 	//반복자를 반화하는 새로운 함수
 	iterator begin() { return data; }
@@ -91,7 +98,8 @@ private:
 	void unchecked_append(const T&);
 };
 
-template<class T>Vec<T>& Vec<T>::operator=(const Vec& rhs){
+template<class T>
+Vec<T>& Vec<T>::operator=(const Vec<T>& rhs){
 	// int i = 0;
 	// lhs = left-hands side (i) = 변수
 	// rhs = right-hands side (0) =값
