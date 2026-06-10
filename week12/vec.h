@@ -34,7 +34,7 @@ public:
 	explicit Vec(size_type n, const T& val = T()) { create(n, val); };
 	//3. 사본 만드는 생성자
 	Vec(const Vec& v) { create(v.begin(), v.end()); };
-	//4.template 추가
+	//4.temple
 	template<class In>Vec(In b, In e) {
 		create(b, e);
 	}
